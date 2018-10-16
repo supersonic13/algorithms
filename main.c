@@ -1,96 +1,67 @@
-
 #include "common.h"
 
-enum {ALGO_EXIT, ALGO_SORTING};
+#define clear() printf("\033[H\033[J")
 
-static int showMenu(void);
-int main(int argc, char **argv)
+
+void clearScreen(void)
 {
-	while(1)
-	{
-		int choice = showMenu();
-		if (choice == 0)
-		{
-			break;
-		}
-
-		switch(choice)
-		{
-			case ALGO_SORTING:
-				sorting();
-				break;
-		}
-	}
-	return 0;
+	clear();
 }
 
-int showMenu(void)
+int readInputInteger(void)
+{
+	char inputString[100];
+	scanf("%s", inputString);
+	int choice = atoi(inputString);
+	return choice;
+}
+
+static int showMenu(void)
 {
 	int choice = 0;
+
 	while (1)
 	{
-		printf(
-				"----\n"
-				"Menu\n"
-				"----\n"
-				"%d. Sorting\n"
-				"%d. Exit"
+		printf (
+				"\n"
+				"\n%d. Algorithms"
+				"\n%d. Problems"
+				"\n%d. Exit"
 				"\n",
-				ALGO_SORTING,
-				ALGO_EXIT
+				ALGORITHMS,
+				PROBLEMS,
+				EXIT
 				);
 
-		char inputString[100];
-		scanf("%s", inputString);
-		choice = atoi(inputString);
+		choice = readInputInteger();
 		if (choice < 0)
 		{
 			printf("\nInvalid input");
+			continue;
 		}
-		else
-		{
-			break;
-		}
-
+		break;
 	}
 
 	return choice;
 }
 
-void printIntArray(int *inputArray, int size)
+int main(int argc, char **argv)
 {
-	printIntArrayHighlight("\t\t", inputArray, 0, size-1, -1, -1, -1);
-}
-
-void printIntArrayHighlight(const char *prefix, int *inputArray, int startIndex, int endIndex, int index1, int index2, int index3)
-{
-	printf("\n%s", prefix);
-	for(int i = 0; i <= endIndex; i++)
+	while(1)
 	{
-		if (i < startIndex)
+		int choice = showMenu();
+		if (choice == 0) break;
+
+		switch (choice)
 		{
-			printf("  \t");
-			continue;
-
+			case ALGORITHMS:
+				algorithmsMain();
+				break;
+			case PROBLEMS:
+				codingProblemsMain();
+				break;
 		}
-		char *colourHighlight = COLOUR_NONE;
-		if (i == index1 || i == index2)	colourHighlight = COLOUR_RED;
-		else if (i == index3) colourHighlight = COLOUR_YELLOW;
-		printf("%s|%d|%s\t", colourHighlight, inputArray[i], COLOUR_NONE);
 	}
-}
 
-void genRandomValues(int *inputArray, int size)
-{
-	srand((unsigned) time(NULL));
-	for(int i = 0; i < size; i++)
-	{
-		inputArray[i] = rand() % 100;
-	}
-}
-
-int getRandomValue(int max)
-{
-	srand((unsigned) time(NULL));
-	return rand() % max;
+	return 0;
 }
