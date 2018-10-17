@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+#include <stdbool.h>
 
 #include "algorithms/common.h"
 #include "codingProblems/common.h"
@@ -19,6 +20,7 @@ enum {EXIT, ALGORITHMS, PROBLEMS};
 
 // Helper APIs
 int readInputInteger(void);
+char * readInputString(void);
 //int readInputChar(void);
 //int readInputString(void);
 int readInputIntegerArray(void);

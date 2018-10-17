@@ -16,6 +16,14 @@ int readInputInteger(void)
 	return choice;
 }
 
+char * readInputString(void)
+{
+	char inputString[100];
+	scanf("%s", inputString);
+	char *returnStr = strdup(inputString);
+	return returnStr;
+}
+
 static int showMenu(void)
 {
 	int choice = 0;

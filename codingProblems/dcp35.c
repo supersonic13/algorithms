@@ -1,7 +1,7 @@
 #include "common.h"
 
 void dcp35_algo(char **inputArray);
-void swapIndexAndValues(char **string, int *index1, int *index2);
+void swapIndexValues(char **string, int index1, int index2);
 
 enum {CHAR_R, CHAR_G, CHAR_B, CHAR_M};
 
@@ -33,14 +33,32 @@ void dcp35(void)
 {
 	clearScreen();
 	problemDescription();
-	problemOptions();
-
+	
 	int choice = problemOptions();	
 	if (choice == 0) return;
 
 	char *inputArray = NULL;
-	
-	if (choice == 3)
+	if (choice == 1)
+	{
+		printf("\nEnter number of random values: ");
+		int numberOfValues = readInputInteger();
+		if (numberOfValues <= 0) numberOfValues = 10;
+		srand(time(NULL));
+		inputArray = (char *)(calloc(numberOfValues, sizeof(char)));
+		for (int i = 0; i < numberOfValues; i++)
+		{
+			int temp = rand() % 10;
+			printf("\ntmp: %d", temp);
+			if (temp < 3) inputArray[i] = 'R';
+			else if (temp < 7) inputArray[i] = 'G';
+			else inputArray[i] = 'B';
+		}
+	}
+	else if (choice == 2)
+	{
+		inputArray = readInputString();
+	}
+	else if (choice == 3)
 	{
 		inputArray = (char *)(calloc(8, sizeof(char)));
 		inputArray[0] = 'G';
@@ -66,7 +84,7 @@ void dcp35_algo(char **inputArray)
 	char *tmpStr = *inputArray;
 	int length = strlen(tmpStr);
 
-	int lastKnownIndex[CHAR_M] = {-1, -1, -1};
+	int countIndex[CHAR_M] = {0, 0, 0};
 
 	printf("\n");
 	for (int i = 0; i < length; i++)
@@ -75,6 +93,13 @@ void dcp35_algo(char **inputArray)
 	}
 
 	int currentIndex = 0;
+	printf(
+			"\n Approach: Increment the count of each character that we need to look for."
+			"\n We would then know if we encounter an R, it should always go to index at: count(R)"
+			"\n Similarly, if we encounter an G, it should always go to index at: count(R) + count(G)"
+			"\n And, if we encounter an B, it should always go to index at: count(R) + count(G) + count(B)"
+			"\n We make only one pass through the array, and swap elements in place, keep it O(n)"
+			);
 	while(currentIndex < length)
 	{
 		printf("\n");
@@ -85,22 +110,40 @@ void dcp35_algo(char **inputArray)
 			if (i == currentIndex) colourValue = COLOUR_YELLOW; 
 			printf("%s%c%s ", colourValue, (*inputArray)[i], COLOUR_NONE);
 		}	
-		printf("\tInitial:%s%3d %s%3d %s%3d%s", COLOUR_RED, lastKnownIndex[CHAR_R], COLOUR_GREEN, lastKnownIndex[CHAR_G], COLOUR_BLUE, lastKnownIndex[CHAR_B], COLOUR_NONE);
+		printf("\tInitial:%s%3d %s%3d %s%3d%s", COLOUR_RED, countIndex[CHAR_R], COLOUR_GREEN, countIndex[CHAR_G], COLOUR_BLUE, countIndex[CHAR_B], COLOUR_NONE);
 		
 		switch((*inputArray)[currentIndex])
 		{
 			case 'R':
-				if (lastKnownIndex[CHAR_R] < 0) lastKnownIndex[CHAR_R] = currentIndex;
+				countIndex[CHAR_R]++;
 				break;
 			case 'G':
-				if (lastKnownIndex[CHAR_G] < 0) lastKnownIndex[CHAR_G] = currentIndex;
+				countIndex[CHAR_G]++;
 				break;
 			case 'B':
-				if (lastKnownIndex[CHAR_B] < 0) lastKnownIndex[CHAR_B] = currentIndex;
+				countIndex[CHAR_B]++;
 				break;
 		}
 
-		printf("\tUpd1: %s%3d %s%3d %s%3d%s", COLOUR_RED, lastKnownIndex[CHAR_R], COLOUR_GREEN, lastKnownIndex[CHAR_G], COLOUR_BLUE, lastKnownIndex[CHAR_B], COLOUR_NONE);
+		// If currentIndex = R, them it would always have to be at countIndex[CHAR_R]-1;
+		// If currentIndex = G, them it would always have to be at countIndex[CHAR_R] + countIndex[CHAR_G] -1;
+		// If currentIndex = B, them it would always have to be at countIndex[CHAR_R] + countIndex[CHAR_G] + countIndex[CHAR_B] -1;
+		//
+		int indexCount = 0;
+		for (int i = 0; i < CHAR_M; i++)
+		{
+			indexCount += countIndex[i];
+			if ( 
+					(i == 0 && (*inputArray)[currentIndex] == 'R') ||
+					(i == 1 && (*inputArray)[currentIndex] == 'G') ||
+					(i == 2 && (*inputArray)[currentIndex] == 'B')
+			   )
+			{
+				swapIndexValues(inputArray, indexCount - 1, currentIndex);
+			}
+		}
+
+		printf("\tUpd1: %s%3d %s%3d %s%3d%s", COLOUR_RED, countIndex[CHAR_R], COLOUR_GREEN, countIndex[CHAR_G], COLOUR_BLUE, countIndex[CHAR_B], COLOUR_NONE);
 
 		currentIndex++;
 	}
@@ -111,15 +154,12 @@ void dcp35_algo(char **inputArray)
 		printf("%c ", (*inputArray)[i]);
 	}
 }
-void swapIndexAndValues(char **string, int *index1, int *index2)
+void swapIndexValues(char **string, int index1, int index2)
 {
-	printf("\nSwap values at index %d (%c) & index %d (%c)", *index1, (*string)[*index1], *index2, (*string)[*index2]);
-	char temp = (*string)[*index1];
-	(*string)[*index1] = (*string)[*index2];
-	(*string)[*index2] = temp;
+	if (index1 < 0 || index2 < 0) return;
 
-	int tempInt = *index1;
-	*index1 = *index2;
-	*index2 = tempInt;
+	char temp = (*string)[index1];
+	(*string)[index1] = (*string)[index2];
+	(*string)[index2] = temp;
 }
 
