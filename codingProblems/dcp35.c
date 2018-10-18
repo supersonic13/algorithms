@@ -48,7 +48,6 @@ void dcp35(void)
 		for (int i = 0; i < numberOfValues; i++)
 		{
 			int temp = rand() % 10;
-			printf("\ntmp: %d", temp);
 			if (temp < 3) inputArray[i] = 'R';
 			else if (temp < 7) inputArray[i] = 'G';
 			else inputArray[i] = 'B';
@@ -110,7 +109,7 @@ void dcp35_algo(char **inputArray)
 			if (i == currentIndex) colourValue = COLOUR_YELLOW; 
 			printf("%s%c%s ", colourValue, (*inputArray)[i], COLOUR_NONE);
 		}	
-		printf("\tInitial:%s%3d %s%3d %s%3d%s", COLOUR_RED, countIndex[CHAR_R], COLOUR_GREEN, countIndex[CHAR_G], COLOUR_BLUE, countIndex[CHAR_B], COLOUR_NONE);
+		printf("\tCount:%s%3d %s%3d %s%3d%s", COLOUR_RED, countIndex[CHAR_R], COLOUR_GREEN, countIndex[CHAR_G], COLOUR_BLUE, countIndex[CHAR_B], COLOUR_NONE);
 		
 		switch((*inputArray)[currentIndex])
 		{
@@ -143,8 +142,6 @@ void dcp35_algo(char **inputArray)
 			}
 		}
 
-		printf("\tUpd1: %s%3d %s%3d %s%3d%s", COLOUR_RED, countIndex[CHAR_R], COLOUR_GREEN, countIndex[CHAR_G], COLOUR_BLUE, countIndex[CHAR_B], COLOUR_NONE);
-
 		currentIndex++;
 	}
 
@@ -156,8 +153,9 @@ void dcp35_algo(char **inputArray)
 }
 void swapIndexValues(char **string, int index1, int index2)
 {
-	if (index1 < 0 || index2 < 0) return;
+	if (index1 < 0 || index2 < 0 || index1 == index2) return;
 
+	printf("\tswap i[%d](%c) and i[%d](%c)", index1, (*string)[index1], index2, (*string)[index2]);
 	char temp = (*string)[index1];
 	(*string)[index1] = (*string)[index2];
 	(*string)[index2] = temp;
