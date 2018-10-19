@@ -11,7 +11,7 @@ void algorithmsMain(void);
 
 // Sort algorithms
 void algorithmsSorting(void);
-
+void quickSort(void);
 
 
 #endif

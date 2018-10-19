@@ -37,6 +37,7 @@ void algorithmsSorting(void)
 		switch (choice)
 		{
 			case SORT_QUICKSORT:
+				quickSort();
 				break;
 		}	
 	}

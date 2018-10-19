@@ -23,7 +23,7 @@ int readInputInteger(void);
 char * readInputString(void);
 //int readInputChar(void);
 //int readInputString(void);
-int readInputIntegerArray(void);
+int readInputIntegerArray(int *inputArray);
 //int readInputCharArray(void);
 //int readInputString(void);
 

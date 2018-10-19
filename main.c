@@ -24,6 +24,35 @@ char * readInputString(void)
 	return returnStr;
 }
 
+int readInputIntegerArray(int *inputArray)
+{
+	char inputString[100];
+	scanf("%s", inputString);
+	/*char *returnStr = strdup(inputString);*/
+	int staticIntArray[100];
+	int numberCount = 0;
+	int * intArray = NULL;
+	char *token = NULL;
+	char *tokenend = NULL;
+
+	token = strtok_r(inputString, " ", &tokenend);
+
+	while(token != NULL)
+	{
+		staticIntArray[numberCount] = atoi(token);
+		numberCount++;
+		token = strtok_r(NULL, " ", &tokenend);
+	}
+	
+	if (numberCount > 0)
+	{
+		intArray = (int *)calloc(numberCount, sizeof(int));
+		for (int i = 0; i < numberCount; i++) intArray[i] = staticIntArray[i];
+	}
+
+	return numberCount;
+}
+
 static int showMenu(void)
 {
 	int choice = 0;
