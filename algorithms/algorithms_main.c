@@ -9,9 +9,11 @@ static int showMenu(void)
 		printf (
 				"\n"
 				"\n%d. Sorting"
+				"\n%d. Misc"
 				"\n%d. Exit"
 				"\n",
 				ALGO_SORTING,
+				ALGO_MISC,
 				ALGO_EXIT
 				);
 
@@ -38,6 +40,9 @@ void algorithmsMain(void)
 		{
 			case ALGO_SORTING:
 				algorithmsSorting();
+				break;
+			case ALGO_MISC:
+				algorithmsMisc();
 				break;
 		}	
 	}

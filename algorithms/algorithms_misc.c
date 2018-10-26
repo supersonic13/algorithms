@@ -8,13 +8,11 @@ static int showMenu(void)
 	{
 		printf (
 				"\n"
-				"\n%d. Quicksort"
-				"\n%d. Mergesort"
+				"\n%d. Merge"
 				"\n%d. Exit"
 				"\n",
-				SORT_QUICKSORT,
-				SORT_MERGESORT,
-				SORT_EXIT
+				MISC_MERGE,
+				MISC_EXIT
 				);
 
 		choice = readInputInteger();
@@ -29,7 +27,7 @@ static int showMenu(void)
 	return choice;
 }
 
-void algorithmsSorting(void)
+void algorithmsMisc(void)
 {
 	while(1)
 	{
@@ -38,11 +36,8 @@ void algorithmsSorting(void)
 
 		switch (choice)
 		{
-			case SORT_QUICKSORT:
-				quickSort();
-				break;
-			case SORT_MERGESORT:
-				mergeSort();
+			case MISC_MERGE:
+				merge();
 				break;
 		}	
 	}

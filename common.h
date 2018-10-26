@@ -26,6 +26,7 @@ char * readInputString(void);
 int readInputIntegerArray(int *inputArray);
 //int readInputCharArray(void);
 //int readInputString(void);
+void swapIntArrayIndex(int *inputArray, int index1, int index2);
 
 void clearScreen(void);
 
